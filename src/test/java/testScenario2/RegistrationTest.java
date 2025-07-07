@@ -143,7 +143,16 @@ public class RegistrationTest {
 		assertEquals(registerPage.getErrorMessageText(RegistrationPage.NAME_ERROR_LOCATOR),
 				"Name can not contain numeric value", "Error message for numeric name is not displayed correctly.");
 	}
-
+	
+	@Test(description = "Validate user is able to register when username is longer than 16 characters.")
+	public void testLengthOfUsername() {
+		String uniqueUsername = "user_" + UUID.randomUUID().toString().substring(0, 20);
+		String uniqueEmail = "email_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
+		registerPage.register(uniqueUsername, uniqueEmail, "Aditya@7157", "Aditya");
+		assertTrue(loginPage.isLoginFormDisplayed(),
+				"Registration Failed: Login Page is not displayed after successful registration.");
+	}
+	
 	@AfterMethod
 	public void tearDown() {
 		System.out.println("Tearing down WebDriver...");
