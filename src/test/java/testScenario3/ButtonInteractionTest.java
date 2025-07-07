@@ -64,7 +64,7 @@ public class ButtonInteractionTest {
         }
     }
 
-    @Test(description = "Verify 'Add Place' button functionality (Expected to FAIL if no change/redirection occurs)")
+    @Test(description = " Test case ID TC_045 || Verify 'Add Place' button functionality (Expected to FAIL if no change/redirection occurs)")
     public void testAddPlaceButtonFunctionality() {
         System.out.println("Starting test: testAddPlaceButtonFunctionality (Expected to FAIL if no change/redirection occurs)");
 
@@ -109,7 +109,7 @@ public class ButtonInteractionTest {
         }
     }
 
-    @Test(description = "Verify 'Tag Friends' button functionality (Expected to FAIL if no change/redirection occurs)")
+    @Test(description = " Test case ID TC_046 || Verify 'Tag Friends' button functionality (Expected to FAIL if no change/redirection occurs)")
     public void testTagFriendsButtonFunctionality() {
         System.out.println("Starting test: testTagFriendsButtonFunctionality (Expected to FAIL if no change/redirection occurs)");
 

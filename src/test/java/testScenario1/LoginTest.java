@@ -222,9 +222,6 @@ public class LoginTest {
     }
 
 
-
-
-
     @AfterMethod
     public void tearDown() {
         System.out.println("Tearing down WebDriver...");
