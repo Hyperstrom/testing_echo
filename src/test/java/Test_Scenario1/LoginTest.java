@@ -56,7 +56,7 @@ public class LoginTest {
         // The XPath for profileElement is "//*[@id="root"]/div/div/div[2]/div[1]/div/div/a[1]/div/img"
         System.out.println("Waiting for home page elements to appear...");
         // Define a timeout for explicit waits (e.g., 15 seconds)
-        int WAIT_TIMEOUT_SECONDS = 15;
+//        int WAIT_TIMEOUT_SECONDS = 15;
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
             // Wait for the profile element to be visible on the new page

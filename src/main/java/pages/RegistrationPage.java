@@ -47,7 +47,7 @@ public class RegistrationPage {
 		emailElement.sendKeys(email);
 	}
 
-	public void register(String userName, String password, String email, String name) {
+	public void register(String userName, String email, String password, String name) {
 		usernameElement.sendKeys(userName);
 		emailElement.sendKeys(email);
 		passwordElement.sendKeys(password);
