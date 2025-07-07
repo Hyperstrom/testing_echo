@@ -30,6 +30,13 @@
     		<scope>test</scope>
 		</dependency>
 
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.18</version> <!-- Use the latest stable version -->
+            <scope>test</scope> <!-- Or 'compile' if you want it in production code too -->
+        </dependency>
+
     </dependencies>
 
 </project>
