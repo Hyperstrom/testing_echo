@@ -6,8 +6,10 @@
     <test name="AuthenticationTests">
         <!-- This test block can contain related authentication test classes -->
         <classes>
-            <class name="Test_Scenario1.LoginTest" />
+            <class name="testScenario1.LoginTest" />
             <class name="testScenario2.RegistrationTest" />
+            <class name="testScenario3.StatusUpdateValidationTest"/>
+            <class name="testScenario3.ButtonInteractionTest"/>
             <!-- Add other authentication related test classes here -->
             <!-- <class name="tests.RegistrationTest" /> -->
         </classes>

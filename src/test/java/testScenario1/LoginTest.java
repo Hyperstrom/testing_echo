@@ -1,4 +1,4 @@
-package Test_Scenario1;
+package testScenario1;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
