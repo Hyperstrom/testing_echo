@@ -46,8 +46,19 @@ public class RegistrationPage {
 
 	public static final By ALL_FORM_ERROR_MESSAGES_LOCATOR = By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/form/span");
 
-	public static final By REGISTERATION_FORM_LOCATOR = By.xpath("//*[@id='root']/div/div[@class='register']");
-	
+	// Locators for the UI elements in testUIForRegistrationPage()
+	public static final By USERNAME_INPUT_LOCATOR = By.name("username");
+	public static final By EMAIL_INPUT_LOCATOR = By.name("email");
+	public static final By PASSWORD_INPUT_LOCATOR = By.name("password");
+	public static final By NAME_INPUT_LOCATOR = By.name("name");
+	public static final By REGISTER_BUTTON_LOCATOR = By.xpath("//button[text()='Register']");
+	public static final By LOGIN_BUTTON_LOCATOR = By.xpath("//button[text()='Login']");
+
+	// Locator to verify the registration page itself is displayed
+	// Assuming a unique element/attribute for the registration form or page div
+	public static final By REGISTRATION_PAGE_TITLE_LOCATOR = By.xpath("//h1[text()='Register']");
+	public static final By REGISTRATION_FORM_LOCATOR = By.xpath("//*[@id='root']/div/div[@class='register']");
+
 	public RegistrationPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
@@ -81,24 +92,36 @@ public class RegistrationPage {
 	public String getErrorMessageText(By errorLocator) {
 		return wait.until(ExpectedConditions.visibilityOfElementLocated(errorLocator)).getText();
 	}
-	
+
 	public List<String> getAllGeneralErrorMessages() {
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ALL_FORM_ERROR_MESSAGES_LOCATOR));
-        List<WebElement> errorElements = driver.findElements(ALL_FORM_ERROR_MESSAGES_LOCATOR);
-        List<String> errorTexts = new ArrayList<>();
-        for (WebElement element : errorElements) {
-            errorTexts.add(element.getText());
-        }
-        return errorTexts;
-    }
-	
-	public boolean isRegistrationPageDisplayed() {
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(ALL_FORM_ERROR_MESSAGES_LOCATOR));
+		List<WebElement> errorElements = driver.findElements(ALL_FORM_ERROR_MESSAGES_LOCATOR);
+		List<String> errorTexts = new ArrayList<>();
+		for (WebElement element : errorElements) {
+			errorTexts.add(element.getText());
+		}
+		return errorTexts;
+	}
+
+	public boolean isElementDisplayed(By locator) {
 		try {
-			return wait.until(ExpectedConditions.visibilityOfElementLocated(REGISTERATION_FORM_LOCATOR)).isDisplayed();
-		}catch(org.openqa.selenium.TimeoutException e) {
+			return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
+		} catch (org.openqa.selenium.TimeoutException e) {
 			return false;
 		}
 	}
+
+	public boolean isRegistrationPageDisplayed() {
+		try {
+			return wait.until(ExpectedConditions.visibilityOfElementLocated(REGISTRATION_FORM_LOCATOR)).isDisplayed();
+		} catch (org.openqa.selenium.TimeoutException e) {
+			return false;
+		}
+	}
+	
+	public String getElementText(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText();
+    }
 
 	public void goToLoginPage() {
 		loginButton.click();
