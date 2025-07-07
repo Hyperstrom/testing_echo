@@ -3,16 +3,11 @@ package testScenario2;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID; // For generating unique IDs
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -25,20 +20,11 @@ public class RegistrationTest {
 	WebDriver driver;
 	LoginPage loginPage;
 	RegistrationPage registerPage;
-	private final int WAIT_TIMEOUT_SECONDS = 15;
 
-	private final By USERNAME_ERROR_LOCATOR = By
-			.xpath("//input[@name='username']/following-sibling::span[@class='error']");
-	private final By EMAIL_ERROR_LOCATOR = By.xpath("//input[@name='email']/following-sibling::span[@class='error']");
-	private final By PASSWORD_ERROR_LOCATOR = By
-			.xpath("//input[@name='password']/following-sibling::span[@class='error']");
-	private final By NAME_ERROR_LOCATOR = By.xpath("//input[@name='name']/following-sibling::span[@class='error']");
-	private final By loginForm = By.xpath("//*[@id='root']/div/div[@class='login']");
-	
 	@BeforeMethod
 	public void setup() {
 		driver = new ChromeDriver();
-		driver.manage().window().maximize(); // Maximize the browser window
+		driver.manage().window().maximize();
 		String url = "http://localhost:3000/login";
 		driver.get(url);
 		loginPage = new LoginPage(driver);
@@ -48,109 +34,92 @@ public class RegistrationTest {
 
 	@Test(description = "Verify successful registration possible using correct credentials")
 	public void testSuccessfulRegistration() {
-		registerPage.register("adi10", "adex@gmail.com", "Aditya@7157", "Aditya");
-		try {
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-			WebElement login = wait.until(ExpectedConditions.visibilityOfElementLocated(loginForm));
-			assertTrue(login.isDisplayed(), "Registration Failed: Login Page is not displayed");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		String uniqueUsername = "user_" + UUID.randomUUID().toString().substring(0, 8);
+		String uniqueEmail = "email_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
+
+		registerPage.register(uniqueUsername, uniqueEmail, "Aditya@7157", "Aditya");
+
+		assertTrue(loginPage.isLoginFormDisplayed(),
+				"Registration Failed: Login Page is not displayed after successful registration.");
 	}
 
 	@Test(description = "Verify that error message is displayed when no credentials are passed")
 	public void testEmptyCredentials() {
 		registerPage.register("", "", "", "");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-		List<WebElement> errorEles = driver.findElements(By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/form/span"));
-		wait.until(ExpectedConditions.visibilityOfAllElements(errorEles));
 
-		List<String> errorText = new ArrayList<>();
-		for (int i = 0; i < errorEles.size(); i++) {
-			errorText.add(errorEles.get(i).getText());
-		}
+		List<String> actualErrorText = registerPage.getAllGeneralErrorMessages();
 
 		List<String> expectedErrors = List.of("Username is required.", "Email is required.", "Password is required.",
 				"Name is required.", "Please correct the highlighted errors.");
-		assertEquals(errorText, expectedErrors, "The error messages are not as expected.");
-
+		assertEquals(actualErrorText, expectedErrors, "The error messages for empty credentials are not as expected.");
 	}
 
 	@Test(description = "Validate error message when username field is empty.")
 	public void testUserNameFieldIsEmpty() {
 		registerPage.register("", "ad@gmail.com", "Aditya@7157", "Aditya");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-		WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(USERNAME_ERROR_LOCATOR));
-		assertEquals(error.getText(), "Username is required.", "Error message is not displayed when username is empty");
-
+		assertEquals(registerPage.getErrorMessageText(RegistrationPage.USERNAME_ERROR_LOCATOR), "Username is required.",
+				"Error message for empty username is not displayed correctly.");
 	}
 
 	@Test(description = "Validate error message when name field is empty.")
 	public void testNameFieldIsEmpty() {
 		registerPage.register("adi", "ad@gmail.com", "Aditya@7157", "");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-		WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(NAME_ERROR_LOCATOR));
-		assertEquals(error.getText(), "Name is required.", "Error message is not displayed when name is empty");
-
+		assertEquals(registerPage.getErrorMessageText(RegistrationPage.NAME_ERROR_LOCATOR), "Name is required.",
+				"Error message for empty name is not displayed correctly.");
 	}
 
 	@Test(description = "Validate error message when password field is empty")
 	public void testPasswordFieldIsEmpty() {
 		registerPage.register("adi", "ad@gmail.com", "", "Aditya");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-		WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(PASSWORD_ERROR_LOCATOR));
-		assertEquals(error.getText(), "Password is required.", "Error message is not displayed when password is empty");
-
+		assertEquals(registerPage.getErrorMessageText(RegistrationPage.PASSWORD_ERROR_LOCATOR), "Password is required.",
+				"Error message for empty password is not displayed correctly.");
 	}
 
 	@Test(description = "Validate error message when email field is empty")
 	public void testEmailFieldIsEmpty() {
 		registerPage.register("adi", "", "Aditya@7157", "Aditya");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-		WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(EMAIL_ERROR_LOCATOR));
-		assertEquals(error.getText(), "Email is required.", "Error message is not displayed when email is empty");
-
+		assertEquals(registerPage.getErrorMessageText(RegistrationPage.EMAIL_ERROR_LOCATOR), "Email is required.",
+				"Error message for empty email is not displayed correctly.");
 	}
 
 	@Test(description = "Validate error message when email field is invalid")
 	public void testValidEmailField() {
 		registerPage.register("adi", "adi@.com", "Aditya@7157", "Aditya");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-		By regError = By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/form/span[1]");
-		WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(regError));
-		assertEquals(error.getText(), "Email address is invalid.",
-				"Error message is not displayed when email is invalid");
-
+		assertEquals(registerPage.getErrorMessageText(RegistrationPage.EMAIL_ERROR_LOCATOR),
+				"Email address is invalid.", "Error message for invalid email format is not displayed correctly.");
 	}
 
 	@Test(description = "Validate error message when existing username.")
 	public void testExistingUsername() {
-		registerPage.register("aditya10", "ad@gmail.com", "Aditya@7157", "Aditya");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-		By regError = By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/form/span[1]");
-		WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(regError));
-		assertEquals(error.getText(), "This username already exists.",
-				"Error message is not displayed when email is invalid");
-
+		registerPage.register("aditya10", "unique_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com",
+				"Aditya@7157", "Aditya");
+		assertEquals(registerPage.getErrorMessageText(RegistrationPage.USERNAME_ERROR_LOCATOR),
+				"This username already exists.", "Error message for existing username is not displayed correctly.");
 	}
 
 	@Test(description = "Validate error message when existing email.")
 	public void testExistingEmail() {
-		registerPage.register("adi10", "adi@gmail.com", "Aditya@7157", "Aditya");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-		By regError = By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/form/span[1]");
-		WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(regError));
-		assertEquals(error.getText(), "This email already exists.",
-				"Error message is not displayed when email is invalid");
-
+		registerPage.register("unique_" + UUID.randomUUID().toString().substring(0, 8), "adi@gmail.com", "Aditya@7157",
+				"Aditya");
+		assertEquals(registerPage.getErrorMessageText(RegistrationPage.EMAIL_ERROR_LOCATOR),
+				"This email already exists.", "Error message for existing email is not displayed correctly.");
 	}
-	
+
 	@Test(description = "Validate password is accepted if Password contains underscore \"_\"")
 	public void testGivingUnderScoreAsPassword() {
-		registerPage.register("adi10", "adex@gmail.com", "Abcd_123", "Aditya");
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(WAIT_TIMEOUT_SECONDS));
-		WebElement login = wait.until(ExpectedConditions.visibilityOfElementLocated(loginForm));
-		assertTrue(login.isDisplayed(), "Registration Failed: \"_\" is not taken as special character");
+		String uniqueUsername = "user_" + UUID.randomUUID().toString().substring(0, 8);
+		String uniqueEmail = "email_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
+
+		registerPage.register(uniqueUsername, uniqueEmail, "Abcd_123", "Aditya");
+		assertTrue(loginPage.isLoginFormDisplayed(),
+				"Registration Failed: Underscore ('_') should be accepted as a special character in password.");
+	}
+
+	@Test(description = "Validate error message when name field is numeric only")
+	public void testGivingNumericValueAsName() {
+		registerPage.register("adit01", "adet@gmail.com", "Abcd@123", "12345678");
+		assertEquals(registerPage.getErrorMessageText(RegistrationPage.NAME_ERROR_LOCATOR),
+				"Name can not contain numeric value", "Error message for numeric name is not displayed correctly.");
 	}
 
 	@AfterMethod
