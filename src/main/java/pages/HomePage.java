@@ -22,7 +22,7 @@ public class HomePage {
 	@FindBy(xpath="//*[@id=\"root\"]/div/div/div[1]/div[2]/div/input")
 	private WebElement searchElement;
 	
-	@FindBy(xpath="//*[@id=\"root\"]/div/div/div[1]/div[3]/a/svg")
+	@FindBy(xpath="//*[@id=\"root\"]/div/div/div[2]/div[1]/div/div/a[1]/div/img")
 	private WebElement profileElement;
 	
 	@FindBy(xpath="//*[@id=\"root\"]/div/div/div[2]/div[1]/div/div/div[1]")

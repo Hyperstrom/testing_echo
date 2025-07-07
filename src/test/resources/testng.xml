@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="FullRegressionSuite" verbose="1" parallel="tests" thread-count="2">
+    <!-- This suite will run all specified test classes -->
+
+    <test name="AuthenticationTests">
+        <!-- This test block can contain related authentication test classes -->
+        <classes>
+            <class name="Test_Scenario1.LoginTest" />
+            <!-- Add other authentication related test classes here -->
+            <!-- <class name="tests.RegistrationTest" /> -->
+        </classes>
+    </test>
+
+    <!-- You can add more <test> blocks as needed to group your tests logically -->
+
+</suite>
