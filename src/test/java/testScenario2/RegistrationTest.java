@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import pages.LoginPage;
 import pages.RegistrationPage;
@@ -34,21 +35,23 @@ public class RegistrationTest {
 
 	@Test(description = "Verify all the Elements are present", groups = { "ui", "sanity", "smoke" })
 	public void testUIForRegistrationPage() {
-		assertTrue(registerPage.isRegistrationPageDisplayed(), "Registration page itself is not displayed.");
+		SoftAssert softAssert = new SoftAssert();
+		softAssert.assertTrue(registerPage.isRegistrationPageDisplayed(), "Registration page itself is not displayed.");
 
-		assertTrue(registerPage.isElementDisplayed(RegistrationPage.USERNAME_INPUT_LOCATOR),
+		softAssert.assertTrue(registerPage.isElementDisplayed(RegistrationPage.USERNAME_INPUT_LOCATOR),
 				"Username input field is not displayed");
-		assertTrue(registerPage.isElementDisplayed(RegistrationPage.EMAIL_INPUT_LOCATOR),
+		softAssert.assertTrue(registerPage.isElementDisplayed(RegistrationPage.EMAIL_INPUT_LOCATOR),
 				"Email input field is not displayed");
-		assertTrue(registerPage.isElementDisplayed(RegistrationPage.PASSWORD_INPUT_LOCATOR),
+		softAssert.assertTrue(registerPage.isElementDisplayed(RegistrationPage.PASSWORD_INPUT_LOCATOR),
 				"Password input field is not displayed");
-		assertTrue(registerPage.isElementDisplayed(RegistrationPage.NAME_INPUT_LOCATOR),
+		softAssert.assertTrue(registerPage.isElementDisplayed(RegistrationPage.NAME_INPUT_LOCATOR),
 				"Name input field is not displayed");
 
-		assertEquals(registerPage.getElementText(RegistrationPage.REGISTER_BUTTON_LOCATOR), "Register",
+		softAssert.assertEquals(registerPage.getElementText(RegistrationPage.REGISTER_BUTTON_LOCATOR), "Register",
 				"Register button text is incorrect or not displayed");
-		assertEquals(registerPage.getElementText(RegistrationPage.LOGIN_BUTTON_LOCATOR), "Login",
+		softAssert.assertEquals(registerPage.getElementText(RegistrationPage.LOGIN_BUTTON_LOCATOR), "Login",
 				"Login button text is incorrect or not displayed");
+		softAssert.assertAll();
 	}
 
 	@Test(description = "Verify successful registration possible using correct credentials", groups = { "regression",
