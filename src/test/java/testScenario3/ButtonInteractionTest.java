@@ -45,7 +45,6 @@ public class ButtonInteractionTest {
 	@BeforeMethod
 	public void setup() {
 		System.out.println("Setting up WebDriver and performing login for StatusUpdateValidationTest...");
-		// --- IMPORTANT: Set the path to your ChromeDriver executable ---
 		driver = DriverSetup.getDriver();
 
 		// Initialize page objects
@@ -67,13 +66,14 @@ public class ButtonInteractionTest {
 		}
 	}
 
-	@Test(description = " Test case ID TC_045 || Verify 'Add Place' button functionality (Expected to FAIL if no change/redirection occurs)")
+	@Test(description = " Test case ID TC_045 || Verify 'Add Place' button functionality (Expected to FAIL if no change/redirection occurs)",
+			groups = {"regression", "negative", "ui"})
 	public void testAddPlaceButtonFunctionality() {
 		System.out.println(
 				"Starting test: testAddPlaceButtonFunctionality (Expected to FAIL if no change/redirection occurs)");
 
 		String initialUrl = driver.getCurrentUrl();
-//        System.out.println("Initial URL: " + initialUrl);
+		System.out.println("Initial URL: " + initialUrl);
 
 		// 1. Click on the "Add Place" button
 		System.out.println("Locating and clicking the 'Add Place' button...");
@@ -91,11 +91,7 @@ public class ButtonInteractionTest {
 		// (defect), so fail the test.
 		System.out.println("Verifying if the URL changed after clicking 'Add Place' using FluentWait...");
 
-		Wait<WebDriver> fluentWait = new FluentWait<>(driver).withTimeout(Duration.ofSeconds(SHORT_WAIT_SECONDS)) // Total
-																													// timeout
-																													// for
-																													// the
-																													// wait
+		Wait<WebDriver> fluentWait = new FluentWait<>(driver).withTimeout(Duration.ofSeconds(SHORT_WAIT_SECONDS))
 				.pollingEvery(Duration.ofMillis(POLLING_INTERVAL_MS)) // How often to check the condition
 				.ignoring(NoSuchElementException.class); // Ignore this exception during polling
 
@@ -115,8 +111,9 @@ public class ButtonInteractionTest {
 			// FluentWait timeout.
 			// This signifies "nothing happened" (a defect), so the test should FAIL.
 			String finalUrl = driver.getCurrentUrl();
+			// Assert that the URL did NOT change, confirming the defect.
 			Assert.assertEquals(finalUrl, initialUrl,
-					"URL unexpectedly changed, but the test expected no change for failure.");
+					"Test Failed: URL unexpectedly changed when it was expected to remain the same (defect validation).");
 			Assert.fail("Test Failed: URL remained '" + initialUrl
 					+ "' after clicking 'Add Place'. This indicates 'nothing happened', which is a defect.");
 		} catch (Exception e) {
@@ -124,7 +121,8 @@ public class ButtonInteractionTest {
 		}
 	}
 
-	@Test(description = " Test case ID TC_046 || Verify 'Tag Friends' button functionality (Expected to FAIL if no change/redirection occurs)")
+	@Test(description = " Test case ID TC_046 || Verify 'Tag Friends' button functionality (Expected to FAIL if no change/redirection occurs)",
+			groups = {"regression", "negative", "ui"})
 	public void testTagFriendsButtonFunctionality() {
 		System.out.println(
 				"Starting test: testTagFriendsButtonFunctionality (Expected to FAIL if no change/redirection occurs)");
@@ -176,8 +174,9 @@ public class ButtonInteractionTest {
 			// FluentWait timeout.
 			// This signifies "nothing happened" (a defect), so the test should FAIL.
 			String finalUrl = driver.getCurrentUrl();
+			// Assert that the URL did NOT change, confirming the defect.
 			Assert.assertEquals(finalUrl, initialUrl,
-					"URL unexpectedly changed, but the test expected no change for failure.");
+					"Test Failed: URL unexpectedly changed when it was expected to remain the same (defect validation).");
 			Assert.fail("Test Failed: URL remained '" + initialUrl
 					+ "' after clicking 'Tag Friends'. This indicates 'nothing happened', which is a defect.");
 		} catch (Exception e) {
@@ -189,7 +188,7 @@ public class ButtonInteractionTest {
 	public void tearDown() {
 		System.out.println("Tearing down WebDriver for StatusUpdateValidationTest...");
 		if (driver != null) {
-			driver.quit(); // Close the browser and end the WebDriver session
+			driver.quit();
 		}
 		System.out.println("WebDriver closed.");
 	}

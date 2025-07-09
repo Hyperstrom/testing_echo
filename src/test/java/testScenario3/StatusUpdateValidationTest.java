@@ -73,7 +73,8 @@ public class StatusUpdateValidationTest {
 		}
 	}
 
-	@Test(description = "Test Case ID TC_042 || Verify placeholder and input validation for empty status update (Expected to Fail)", priority = 4)
+	@Test(description = "Test Case ID TC_042 || Verify placeholder and input validation for empty status update (Expected to Fail)", groups = {
+			"validation", "negative", "ui" }, priority = 4)
 	public void testEmptyStatusUpdateValidation() {
 		System.out.println(
 				"Starting test: testEmptyStatusUpdateValidation (Expected to Fail if no validation message appears)");
@@ -140,7 +141,8 @@ public class StatusUpdateValidationTest {
 		}
 	}
 
-	@Test(description = "Verify posting text and its visibility on the timeline", priority = 3)
+	@Test(description = "Verify posting text and its visibility on the timeline", groups = { "smoke", "regression",
+			"ui" }, priority = 3)
 	public void testPostTextAndVisibility() {
 		System.out.println("Starting test: testPostTextAndVisibility");
 
@@ -198,7 +200,8 @@ public class StatusUpdateValidationTest {
 		}
 	}
 
-	@Test(description = "Verify post time is displayed as 'a few seconds ago'", priority = 1)
+	@Test(description = "Verify post time is displayed as 'a few seconds ago'", groups = { "regression",
+			"ui" }, priority = 1)
 	public void testPostTimeVisibilityAndContent() {
 		System.out.println("Starting test: testPostTimeVisibilityAndContent");
 
@@ -269,7 +272,8 @@ public class StatusUpdateValidationTest {
 		}
 	}
 
-	@Test(description = "Verify commenting on the first post and its visibility", priority = 2)
+	@Test(description = "Verify commenting on the first post and its visibility", groups = { "regression",
+			"ui" }, priority = 2)
 	public void testCommentingOnFirstPost() {
 		System.out.println("Starting test: testCommentingOnFirstPost");
 

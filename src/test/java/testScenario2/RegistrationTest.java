@@ -96,7 +96,7 @@ public class RegistrationTest {
 				"Error message for empty password is not displayed correctly.");
 	}
 
-	@Test(description = "Validate error message when email field is empty")
+	@Test(description = "Validate error message when email field is empty", groups = { "regression", "negative" })
 	public void testEmailFieldIsEmpty() {
 		registerPage.register("adi", "", "Aditya@7157", "Aditya");
 		assertEquals(registerPage.getErrorMessageText(RegistrationPage.EMAIL_ERROR_LOCATOR), "Email is required.",
@@ -144,7 +144,7 @@ public class RegistrationTest {
 				"Name can not contain numeric value", "Error message for numeric name is not displayed correctly.");
 	}
 
-	@Test(description = "Validate user is able to register when username is longer than 16 characters.")
+	@Test(description = "Validate user is able to register when username is longer than 16 characters.", groups = { "regression", "positive" })
 	public void testLengthOfUsername() {
 		String uniqueUsername = "user_" + UUID.randomUUID().toString().substring(0, 20);
 		String uniqueEmail = "email_" + UUID.randomUUID().toString().substring(0, 8) + "@example.com";
