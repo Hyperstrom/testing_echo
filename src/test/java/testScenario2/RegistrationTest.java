@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.UUID;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import config.DriverSetup;
 import pages.LoginPage;
 import pages.RegistrationPage;
 
@@ -24,10 +24,7 @@ public class RegistrationTest {
 
 	@BeforeMethod
 	public void setup() {
-		driver = new ChromeDriver();
-		driver.manage().window().maximize();
-		String url = "http://localhost:3000/login";
-		driver.get(url);
+		driver = DriverSetup.getDriver();
 		loginPage = new LoginPage(driver);
 		registerPage = new RegistrationPage(driver);
 		loginPage.goToRegistrationPage();
@@ -146,7 +143,7 @@ public class RegistrationTest {
 		assertEquals(registerPage.getErrorMessageText(RegistrationPage.NAME_ERROR_LOCATOR),
 				"Name can not contain numeric value", "Error message for numeric name is not displayed correctly.");
 	}
-	
+
 	@Test(description = "Validate user is able to register when username is longer than 16 characters.")
 	public void testLengthOfUsername() {
 		String uniqueUsername = "user_" + UUID.randomUUID().toString().substring(0, 20);
@@ -155,7 +152,7 @@ public class RegistrationTest {
 		assertTrue(loginPage.isLoginFormDisplayed(),
 				"Registration Failed: Login Page is not displayed after successful registration.");
 	}
-	
+
 	@AfterMethod
 	public void tearDown() {
 		System.out.println("Tearing down WebDriver...");
